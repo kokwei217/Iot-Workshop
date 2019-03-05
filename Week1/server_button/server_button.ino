@@ -1,8 +1,9 @@
 
 #include <ESP8266WiFi.h>
 
-const char* ssid = "sarahteh12";
-const char* password = "0126890907";
+const char* ssid = "kokwei";
+const char* password = "kokwei97";
+int state = LOW;
 
 WiFiServer server(80);
 
@@ -31,10 +32,13 @@ void loop() {
       if (client.available()) {
         
         char c = client.read();
-        Serial.print( c);
+        Serial.print(c);
         client.flush();
 
-        if (c == '1')  digitalWrite(16, HIGH);
+        if (c == '1') {
+          state = !state;
+          digitalWrite(16, state);
+        }
       }
     }
   }
