@@ -2,16 +2,35 @@
 
 const char* ssid = "kokwei";
 const char* password = "kokwei97";
-int led = 16;
-int value = LOW;
+int red = 16;
+int green = 5;
+int blue = 4;
+int value = LOW; 
+
+int sequence [8][3] {
+  {0, 0, 0},
+  {0, 0, 1},
+  {0, 1, 0},
+  {0, 1, 1},
+  {1, 0, 0},
+  {1, 0, 1},
+  {1, 1, 0},
+  {1, 1, 1}
+};
 
 WiFiServer server(80); //default port of http
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  digitalWrite(led, LOW);
+  pinMode(red, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(blue, OUTPUT);
+
+  digitalWrite(red, HIGH);
+  digitalWrite(green, HIGH);
+  digitalWrite(blue, HIGH);
+
 
   Serial.println();
   Serial.println("Connecting to ...");
@@ -34,6 +53,14 @@ void setup() {
 }
 
 void loop() {
+//  for (int i = 0; i < 8; i ++) {   //Loop through all rgb colors
+//    digitalWrite(red, sequence[i][0]);
+//    digitalWrite(green, sequence[i][1]);
+//    digitalWrite(blue, sequence[i][2]);
+//    delay(500);
+//  }
+
+
   WiFiClient client = server.available(); // Listen for incoming clients,if there is a client connection
 
   if (client) {
@@ -45,14 +72,31 @@ void loop() {
     String request = client.readStringUntil('\n');  //read the data
     Serial.println(request);
 
-    if (request.indexOf("/LED=ON") != -1) {
+    if (request.indexOf("/r1") != -1) {
       value = HIGH;
-      digitalWrite(led, HIGH);
+      digitalWrite(red, LOW);
     }
 
-    else if (request.indexOf("/LED=OFF") != -1) {
+    else if (request.indexOf("/r0") != -1) {
       value = LOW;
-      digitalWrite(led, LOW);
+      digitalWrite(red, HIGH);
+    }
+
+    else if (request.indexOf("/g1") != -1) {
+      value = LOW;
+      digitalWrite(green, LOW);
+    }
+    else if (request.indexOf("/g0") != -1) {
+      value = LOW;
+      digitalWrite(green, HIGH);
+    }
+    else if (request.indexOf("/b1") != -1) {
+      value = LOW;
+      digitalWrite(blue, LOW);
+    }
+    else if (request.indexOf("/b0") != -1) {
+      value = LOW;
+      digitalWrite(blue, HIGH);
     }
 
 
