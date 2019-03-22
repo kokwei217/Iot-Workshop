@@ -38,43 +38,45 @@ void loop() {
 
   if (client) {
 
-    while (!client.available()); //wait until client has data available for reading
+    while (client.connected()) {    //wait until client has data available for reading
 
-    Serial.println("new client");
+      if (client.available()) {
 
-    String request = client.readStringUntil('\n');  //read the data
-    Serial.println(request);
+        Serial.println("new client");
 
-    if (request.indexOf("/LED=ON") != -1) {
-      value = HIGH;
-      digitalWrite(led, HIGH);
+        String request = client.readStringUntil('\n');  //read the data
+        Serial.println(request);
+
+        if (request.indexOf("/LED=ON") != -1) {
+          value = HIGH;
+          digitalWrite(led, HIGH);
+        }
+
+        else if (request.indexOf("/LED=OFF") != -1) {
+          value = LOW;
+          digitalWrite(led, LOW);
+        }
+
+
+        client.println("HTTP/1.1 200 OK");  //http response header
+        client.println("Content-Type : text/html");
+        client.println();
+        client.println("<!DOCTYPE HTML>"); // specify version of html
+        client.println("<html>");
+        client.println("<h1> My First website </h1>");
+
+        client.println("<br>");
+        client.print("LED is now ");
+        if (value == HIGH ) client.println ("ON");
+        else if (value == LOW ) client.println("OFF");
+        //      client.println("<a href = https://www.google.com> Visit Google </a>");
+        client.println("<a href =/LED=ON> <button> Turn on LED</button> </a>");
+        client.println("<a href= /LED=OFF> <button> Turn off LED </button> </a>");
+
+        client.println("</html>");
+        Serial.println("Client disconnected");
+        break;
+      }
     }
-
-    else if (request.indexOf("/LED=OFF") != -1) {
-      value = LOW;
-      digitalWrite(led, LOW);
-    }
-
-
-    client.println("HTTP/1.1 200 OK");  //http response header
-    client.println("Content-Type : text/html");
-    client.println();
-    client.println("<!DOCTYPE HTML>"); // specify version of html
-    client.println("<html>");
-    client.println("<h1> My First website </h1>");
-
-    client.println("<br>");
-    client.print("LED is now ");
-    if (value == HIGH ) client.println ("ON");
-    else if (value == LOW ) client.println("OFF");
-    //      client.println("<a href = https://www.google.com> Visit Google </a>");
-    client.println("<a href =/LED=ON> <button> Turn on LED</button> </a>");
-    client.println("<a href= /LED=OFF> <button> Turn off LED </button> </a>");
-
-    client.println("</html>");
-    Serial.println("Client disconnected");
-
   }
 }
-
-
