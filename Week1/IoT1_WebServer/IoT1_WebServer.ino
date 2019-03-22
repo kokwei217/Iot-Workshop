@@ -64,15 +64,6 @@ void loop() {
         client.println("<!DOCTYPE HTML>"); // specify version of html
         client.println("<html>");
         client.println("<h1> My First website </h1>");
-
-        client.println("<br>");
-        client.print("LED is now ");
-        if (value == HIGH ) client.println ("ON");
-        else if (value == LOW ) client.println("OFF");
-        //      client.println("<a href = https://www.google.com> Visit Google </a>");
-        client.println("<a href =/LED=ON> <button> Turn on LED</button> </a>");
-        client.println("<a href= /LED=OFF> <button> Turn off LED </button> </a>");
-
         client.println("</html>");
         Serial.println("Client disconnected");
         break;
