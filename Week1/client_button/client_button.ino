@@ -26,16 +26,17 @@ void loop() {
   WiFiClient client;
   if (!client.connect (host, port)) Serial.println("Connection failed");
   if (current == LOW && previous == HIGH) {
-    client.println("/LED=ON");
-    Serial.println("success");
-    pressed_time = millis();
-    state = HIGH;
+    state = !state;
+    if(state == HIGH)
+      client.println("/LED=ON");
+    else if (state == LOW)
+          client.println("/LED=OFF");
+
+   
+    
   }
 
-  if( (millis() - pressed_time) > 3000  && state == HIGH ){
-    client.println("/LED=OFF");
-    state = LOW; 
-  }
+  
 
   previous = current;
 

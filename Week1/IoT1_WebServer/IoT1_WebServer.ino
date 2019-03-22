@@ -64,6 +64,10 @@ void loop() {
         client.println("<!DOCTYPE HTML>"); // specify version of html
         client.println("<html>");
         client.println("<h1> My First website </h1>");
+//        client.println("<a href = https://www.google.com> Visit Google  </a>");   
+        client.println("<a href = /LED=ON > <button>  <b>turn on led  </button> </b> </a>");
+        client.println("<a href = /LED=OFF> turn off led  </a>");
+
         client.println("</html>");
         Serial.println("Client disconnected");
         break;
